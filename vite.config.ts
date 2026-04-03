@@ -9,6 +9,7 @@ export default defineConfig({
       "/api": {
         target: "https://digitalcodingtest.bupa.com.au",
         changeOrigin: true,
+        secure: false,
       },
     },
   },

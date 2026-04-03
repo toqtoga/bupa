@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { Bookshelf } from "../Bookshelf/Bookshelf";
-import { ButtonBlue, ButtonPlain } from "../Button/Button";
+import { ButtonBlue, ButtonError, ButtonPlain } from "../Button/Button";
 import { parseBookOwners, useFetchBookOwners } from "../../hooks/useFetchBooks";
 import { useState } from "react";
 
@@ -13,6 +13,7 @@ export const OwnerAndBooks = () => {
     data: allData,
     isLoading: allDataIsLoading,
     error: allDataError,
+    refetch: refetchAllData,
   } = useFetchBookOwners({ select: parseAll });
   const {
     data: hardcoverData,
@@ -22,13 +23,12 @@ export const OwnerAndBooks = () => {
 
   const dataToDisplay = bookshelfType === "Hardcover" ? hardcoverData : allData;
 
-  if (allDataIsLoading || hardcoverDataIsLoading || !allData || !hardcoverData)
-    return <p>Loading books...</p>;
-  if (allDataError || hardcoverError) return <p>Error occurred.</p>;
+  const loading =
+    allDataIsLoading || hardcoverDataIsLoading || !allData || !hardcoverData;
+  const error = allDataError || hardcoverError;
 
-  return (
-    <OwnerAndBooksContainer>
-      <OwnerAndBooksTitle>Owners and Books</OwnerAndBooksTitle>
+  const contents = (
+    <>
       <OwnerAndBooksContents>
         {dataToDisplay &&
           dataToDisplay.map((book) => (
@@ -46,6 +46,20 @@ export const OwnerAndBooks = () => {
           Hardcover only
         </ButtonPlain>
       </OwnerAndBooksFooter>
+    </>
+  );
+
+  return (
+    <OwnerAndBooksContainer>
+      <OwnerAndBooksTitle>Owners and Books</OwnerAndBooksTitle>
+      {!loading && !error && contents}
+      {loading && <NotificationBox>Loading...</NotificationBox>}
+      {error && (
+        <NotificationBox>
+          Error occured.
+          <ButtonError onClick={() => refetchAllData()}>Try again?</ButtonError>
+        </NotificationBox>
+      )}
     </OwnerAndBooksContainer>
   );
 };
@@ -62,6 +76,21 @@ const OwnerAndBooksTitle = styled.h1`
   background-color: var(--color-primary);
   color: white;
   text-align: center;
+`;
+
+const NotificationBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 700px;
+  margin: 1rem auto;
+  padding: 0 1rem;
+  gap: 2rem;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    padding: 0.5rem;
+    width: 60%;
+  }
 `;
 
 const OwnerAndBooksContents = styled.div`

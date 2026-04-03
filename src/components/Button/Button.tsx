@@ -25,3 +25,11 @@ export const ButtonPlain = styled(Button)`
   color: var(--color-primary);
   text-decoration: underline;
 `;
+
+export const ButtonError = styled(Button)`
+  padding: 0;
+  background-color: transparent;
+  color: var(--color-primary);
+  text-decoration: underline;
+  width: fit-content;
+`;
