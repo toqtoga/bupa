@@ -1,12 +1,4 @@
-export type BookOwner = {
-  name: string;
-  age: number;
-  books: Book[];
-};
-export type Book = {
-  name: string;
-  type: string;
-};
+import type { BookOwner } from "../../hooks/types";
 
 const bookOwnerData: BookOwner[] = [
   {

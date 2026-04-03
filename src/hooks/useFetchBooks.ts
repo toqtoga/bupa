@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import bookOwnerData, { type BookOwner } from "../tests/fixtures/owner";
+import bookOwnerData from "../tests/fixtures/owner";
 import type { BookshelfProps } from "../components/Bookshelf/Bookshelf";
+import type { BookOwner } from "./types";
 
 const MOCKED_DATA = false;
 export const API_URL = "/api/v1/bookowners";
@@ -13,7 +14,7 @@ export const useFetchBookOwners = ({
   return useQuery({
     queryKey: ["bookOwnerData"],
     queryFn: async (): Promise<BookOwner[]> => {
-      if (MOCKED_DATA) return bookOwnerData;
+      if (MOCKED_DATA) return [...bookOwnerData];
       const res = await fetch(API_URL);
       if (!res.ok) throw new Error("Not found");
       return res.json() as Promise<BookOwner[]>;

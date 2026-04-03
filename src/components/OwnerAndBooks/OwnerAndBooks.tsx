@@ -8,9 +8,7 @@ const parseAll = parseBookOwners();
 const parseHardcover = parseBookOwners("Hardcover");
 
 export const OwnerAndBooks = () => {
-  const [bookshelfType, setBookshelfType] = useState<string | undefined>(
-    undefined as undefined | "Hardcover",
-  );
+  const [bookshelfType, setBookshelfType] = useState<string | undefined>();
   const {
     data: allData,
     isLoading: allDataIsLoading,
@@ -33,8 +31,8 @@ export const OwnerAndBooks = () => {
       <OwnerAndBooksTitle>Owners and Books</OwnerAndBooksTitle>
       <OwnerAndBooksContents>
         {dataToDisplay &&
-          dataToDisplay.map((book, index) => (
-            <Bookshelf key={index} {...book} booksType={bookshelfType} />
+          dataToDisplay.map((book) => (
+            <Bookshelf key={book.title} {...book} booksType={bookshelfType} />
           ))}
       </OwnerAndBooksContents>
       <OwnerAndBooksFooter>
@@ -74,7 +72,6 @@ const OwnerAndBooksContents = styled.div`
   margin: 1rem auto;
   padding: 0 1rem;
   gap: 2rem;
-
   @media (max-width: 600px) {
     flex-direction: column;
     padding: 0.5rem;
@@ -87,23 +84,16 @@ const OwnerAndBooksFooter = styled.div`
   flex-direction: row-reverse;
   align-items: center;
   border-top: 1px solid grey;
-  margin-top: 1rem;
   padding: 1rem;
   background-color: white;
-  z-index: 100;
-  width: 700px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 700px;
   margin: 0 auto;
   gap: 1rem;
-
+  position: sticky;
+  bottom: 0;
   @media (max-width: 600px) {
-    border-top: 1px solid grey;
-    width: 100%;
-    padding: 1rem;
     flex-direction: column;
-    position: fixed;
-    bottom: 0;
-    align-items: center;
     gap: 0rem;
   }
 `;

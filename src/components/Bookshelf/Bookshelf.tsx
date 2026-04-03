@@ -16,7 +16,9 @@ export const Bookshelf = ({ title, books, booksType }: BookshelfProps) => {
         {books
           .sort((a, b) => a.localeCompare(b))
           .map((book, index) => (
-            <div key={index}>{book}</div>
+            <div key={index} className="book-title">
+              {book}
+            </div>
           ))}
       </BookshelfContents>
     </BookshelfContainer>

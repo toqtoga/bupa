@@ -20,6 +20,13 @@ describe("Bookshelf tests", async () => {
     expect(getByText("Book 1.3", { exact: true })).toBeInTheDocument();
   });
 
+  test("renders a bookshelf and sorts the data", async () => {
+    const { container } = await render(<Bookshelf {...bookshelfFixture} />);
+    const items = container.getElementsByClassName("book-title");
+    const texts = Array.from(items).map((el) => el.textContent?.trim() ?? "");
+    expect(texts).toEqual(["Book 1.1", "Book 1.2", "Book 1.3"]);
+  });
+
   test("renders the bookshelf in desktop view", async () => {
     await page.viewport(1920, 600);
     const { baseElement } = await render(<Bookshelf {...bookshelfFixture} />);
