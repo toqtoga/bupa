@@ -20,10 +20,10 @@ jobs:
       - name: Run linter
         run: npm run lint --if-present
       
-      - name: Run tests:browser
-        run: npm run tests:browser -- --coverage --watchAll=false
+      - name: Run test:browser
+        run: npm run test:browser -- --coverage --watchAll=false
  
-      - name: Run tests
+      - name: Run test
         run: npm run test -- --coverage --watchAll=false
  
       - name: Upload coverage report
