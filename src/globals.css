@@ -1,0 +1,6 @@
+:root {
+  --color-primary: #0079c8;
+  --font-primary: Arial, Tahoma, serif;
+
+  font-family: var(--font-primary);
+}
