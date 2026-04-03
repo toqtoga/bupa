@@ -15,5 +15,8 @@ export default defineConfig({
       "./temp/**",
       "**/*/*.spec.tsx",
     ],
+    coverage: {
+      provider: "v8",
+    },
   },
 });
