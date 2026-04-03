@@ -1,10 +1,20 @@
-const ownerData = [
+export type BookOwner = {
+  name: string;
+  age: number;
+  books: Book[];
+};
+export type Book = {
+  name: string;
+  type: string;
+};
+
+const bookOwnerData: BookOwner[] = [
   {
     name: "Jane",
     age: 23,
     books: [
       {
-        name: "Hamlet",
+        name: "A Midsummer Night's Dream",
         type: "Hardcover",
       },
       {
@@ -18,7 +28,7 @@ const ownerData = [
     age: 14,
     books: [
       {
-        name: "Hamlet",
+        name: "A Midsummer Night's Dream",
         type: "Paperback",
       },
     ],
@@ -71,4 +81,4 @@ const ownerData = [
   },
 ];
 
-export default ownerData;
+export default bookOwnerData;

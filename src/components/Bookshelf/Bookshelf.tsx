@@ -3,16 +3,21 @@ import styled from "styled-components";
 export interface BookshelfProps {
   title: string;
   books: string[];
+  booksType?: string;
 }
 
-export const Bookshelf = ({ title, books }: BookshelfProps) => {
+export const Bookshelf = ({ title, books, booksType }: BookshelfProps) => {
   return (
     <BookshelfContainer>
-      <BookshelfTitle>{title}</BookshelfTitle>
+      <BookshelfTitle role="title">
+        {booksType ? booksType + " " : ""}Books owned by {title}
+      </BookshelfTitle>
       <BookshelfContents>
-        {books.map((book, index) => (
-          <div key={index}>{book}</div>
-        ))}
+        {books
+          .sort((a, b) => a.localeCompare(b))
+          .map((book, index) => (
+            <div key={index}>{book}</div>
+          ))}
       </BookshelfContents>
     </BookshelfContainer>
   );
@@ -21,7 +26,7 @@ export const Bookshelf = ({ title, books }: BookshelfProps) => {
 const BookshelfContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 290px;
 
   @media (max-width: 600px) {
     width: 100%;

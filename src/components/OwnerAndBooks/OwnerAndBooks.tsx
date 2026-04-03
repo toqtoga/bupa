@@ -1,22 +1,52 @@
 import styled from "styled-components";
-import { Bookshelf, type BookshelfProps } from "../Bookshelf/Bookshelf";
+import { Bookshelf } from "../Bookshelf/Bookshelf";
+import { ButtonBlue, ButtonPlain } from "../Button/Button";
+import { parseBookOwners, useFetchBookOwners } from "../../hooks/useFetchBooks";
+import { useState } from "react";
 
-export interface OwnerAndBooksProps {
-  books: BookshelfProps[];
-}
+const parseAll = parseBookOwners();
+const parseHardcover = parseBookOwners("Hardcover");
 
-export const OwnerAndBooks = ({ books }: OwnerAndBooksProps) => {
+export const OwnerAndBooks = () => {
+  const [bookshelfType, setBookshelfType] = useState<string | undefined>(
+    undefined as undefined | "Hardcover",
+  );
+  const {
+    data: allData,
+    isLoading: allDataIsLoading,
+    error: allDataError,
+  } = useFetchBookOwners({ select: parseAll });
+  const {
+    data: hardcoverData,
+    isLoading: hardcoverDataIsLoading,
+    error: hardcoverError,
+  } = useFetchBookOwners({ select: parseHardcover });
+
+  const dataToDisplay = bookshelfType === "Hardcover" ? hardcoverData : allData;
+
+  if (allDataIsLoading || hardcoverDataIsLoading || !allData || !hardcoverData)
+    return <p>Loading books...</p>;
+  if (allDataError || hardcoverError) return <p>Error occurred.</p>;
+
   return (
     <OwnerAndBooksContainer>
-      <OwnerAndBooksTitle>Owner and Books</OwnerAndBooksTitle>
+      <OwnerAndBooksTitle>Owners and Books</OwnerAndBooksTitle>
       <OwnerAndBooksContents>
-        {books.map((book, index) => (
-          <Bookshelf key={index} {...book} />
-        ))}
+        {dataToDisplay &&
+          dataToDisplay.map((book, index) => (
+            <Bookshelf key={index} {...book} booksType={bookshelfType} />
+          ))}
       </OwnerAndBooksContents>
       <OwnerAndBooksFooter>
-        <ButtonBlue>Get Books</ButtonBlue>
-        <ButtonPlain>Hardcover only</ButtonPlain>
+        <ButtonBlue title="all-btn" onClick={() => setBookshelfType(undefined)}>
+          Get Books
+        </ButtonBlue>
+        <ButtonPlain
+          title="hardcover-btn"
+          onClick={() => setBookshelfType("Hardcover")}
+        >
+          Hardcover only
+        </ButtonPlain>
       </OwnerAndBooksFooter>
     </OwnerAndBooksContainer>
   );
@@ -40,7 +70,7 @@ const OwnerAndBooksContents = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 1000px;
+  max-width: 700px;
   margin: 1rem auto;
   padding: 0 1rem;
   gap: 2rem;
@@ -61,7 +91,7 @@ const OwnerAndBooksFooter = styled.div`
   padding: 1rem;
   background-color: white;
   z-index: 100;
-  width: 1000px;
+  width: 700px;
   max-width: 100%;
   margin: 0 auto;
   gap: 1rem;
@@ -76,30 +106,4 @@ const OwnerAndBooksFooter = styled.div`
     align-items: center;
     gap: 0rem;
   }
-`;
-
-const Button = styled.button`
-  padding: 0.5rem;
-  font-size: 0.9rem;
-  font-weight: bold;
-  border: none;
-  border-radius: 0.5rem;
-  cursor: pointer;
-
-  @media (max-width: 600px) {
-    width: 200px;
-    margin-bottom: 0.5rem;
-  }
-`;
-const ButtonBlue = styled(Button)`
-  background-color: var(--color-primary);
-  color: white;
-  border: none;
-`;
-
-const ButtonPlain = styled(Button)`
-  padding: 0;
-  background-color: transparent;
-  color: var(--color-primary);
-  text-decoration: underline;
 `;
